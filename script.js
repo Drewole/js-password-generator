@@ -16,17 +16,15 @@ var characters = {// I lengthened them all out to give a better chance for the o
 var passwordText = document.querySelector("#password");
 var generateBtn = document.querySelector("#generate");
 
-function startPassGen() {
+
+
+function howManyChars() {
+  
   passwordText.placeholder = "Your Secure Password";
   passwordText.value = "";
   finalPass = "";
-}
-
-function howManyChars() {
-  startPassGen();
 
   var totalCharacters = window.prompt("How many characters long should your password be?");
-
 
   var parsed = parseInt(totalCharacters);
 
@@ -41,40 +39,24 @@ function howManyChars() {
   }
 }
 
-// Handles the choices logic
-function wantUppercase(){
-  var uppercase = window.confirm("Would you like uppercase letters?");
-  return uppercase;
-}
-function wantLowercase(){
-  var lowercase = window.confirm("Would you like lowercase letters?");
-  return lowercase;
-}
-function wantNumber(){
-  var number = window.confirm("Would you like numbers?");
-  return number;
-}
-function wantSpecial(){
-  var special = window.confirm("Would you like special characters?");
-  return special;
-}
+//Gets the user prefs
 function getPrefs() {
-  var lowerCase = wantLowercase();
+  var lowerCase = window.confirm("Would you like lowercase letters?");
   if (lowerCase) {
     pass = pass + characters.lowerLetters;///Need to ask gary about this
   }
 
-  var upperCase = wantUppercase();
+  var upperCase = window.confirm("Would you like uppercase letters?");
   if (upperCase) {
     pass = pass + characters.upperLetters;
   }
 
-  var numbers = wantNumber();
+  var numbers = window.confirm("Would you like numbers?");
   if (numbers) {
     pass = pass + characters.numbers;
   }
 
-  var specChars = wantSpecial();
+  var specChars = window.confirm("Would you like special characters?");
   if (specChars) {
     pass = pass + characters.specChars;
   }
@@ -83,14 +65,17 @@ function getPrefs() {
     window.alert("You need to choose at least one character type.");
     getPrefs();
   } else {
-//Here we will get what characters and the length of the password the user wants
+    //Here we will get what characters and the length of the password the user wants
     return pass;
   }
   
 }
 
 //Puts the password together with the prefs and length
-function generatePassword(passLength,prefs) {
+function generatePassword() {
+  var passLength = howManyChars();
+  var prefs = getPrefs();
+
   prefsLength = prefs.length;
   for (var i = 0; i < passLength; i++ ) {
     finalPass += prefs.charAt(Math.floor(Math.random() * prefsLength));
@@ -103,9 +88,7 @@ function generatePassword(passLength,prefs) {
 
 // Write password to the #password input
 function writePassword() {
-  var passLength = howManyChars();
-  var preferences = getPrefs();
-  var password = generatePassword(passLength , preferences);
+  var password = generatePassword();
 
   passwordText.value = password;
 
