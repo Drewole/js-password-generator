@@ -1,22 +1,35 @@
+({
+  "plugins": ["jsdom-quokka-plugin"],
+  "jsdom": {"file": "index.html"} // Located in project root
+})
+
 // Assignment Code
 //Make an object with all of the characters/numbers/letters
 // have if statements for the prompts. When clicked ok, we are going to add that array to the main array to add those characters.
 
+/// This is all for the length of password slider
+const slider = document.getElementById("pass-length");
+const output = document.getElementById("output");
+
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
 //Steps
 // 1. 
-var pass = "";
-var finalPass = "";
-var characters = {// I lengthened them all out to give a better chance for the other types with fewer chars.
+let pass = "";
+let finalPass = "";
+const characters = {// I lengthened them all out to give a better chance for the other types with fewer chars.
   numbers: "12345678901234567890",
   lowerLetters: "abcdefghijklmnopqrstuvwxyz",
   upperLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   specChars: "@*&#@^#!&$!*&!*$^%#!$@!$#!"
 }
-var passwordText = document.querySelector("#password");
-var generateBtn = document.querySelector("#generate");
-
-
+const passwordText = document.querySelector("#password");
+const generateBtn = document.querySelector("#generate");
 
 function howManyChars() {
   
@@ -24,44 +37,39 @@ function howManyChars() {
   passwordText.value = "";
   finalPass = "";
 
-  var totalCharacters = window.prompt("How many characters long should your password be?");
+  let totalCharacters = document.getElementById("pass-length").value;
 
-  var parsed = parseInt(totalCharacters);
-
-  if (isNaN(parsed)) {
-    window.alert("You need to enter a number between 8 and 128");
-    howManyChars();
-  } else if (parsed < 8 || parsed > 128) { 
-    window.alert("You need to enter a number between 8 and 128");
-    howManyChars();
-  } else {
-    return parsed;
-  }
+  let parsed = parseInt(totalCharacters);
+  return parsed;
 }
 
 //Gets the user prefs
 function getPrefs() {
-  var lowerCase = window.confirm("Would you like lowercase letters?");
-  if (lowerCase) {
-    pass = pass + characters.lowerLetters;///Need to ask gary about this
+  let lowerCase = document.getElementById("lowercase");
+  pass = ""
+  if (lowerCase.checked) {
+    pass = pass + characters.lowerLetters;
   }
 
-  var upperCase = window.confirm("Would you like uppercase letters?");
-  if (upperCase) {
+  let upperCase = document.getElementById("uppercase");
+
+  if (upperCase.checked) {
     pass = pass + characters.upperLetters;
   }
 
-  var numbers = window.confirm("Would you like numbers?");
-  if (numbers) {
+  let numbers = document.getElementById("numbers");
+
+  if (numbers.checked) {
     pass = pass + characters.numbers;
   }
 
-  var specChars = window.confirm("Would you like special characters?");
-  if (specChars) {
+  let specChars = document.getElementById("special-characters");
+
+  if (specChars.checked) {
     pass = pass + characters.specChars;
   }
 
-  if (pass.length <= 0) {
+  if (!specChars && !numbers && !upperCase && !lowerCase) {
     window.alert("You need to choose at least one character type.");
     getPrefs();
   } else {
@@ -73,25 +81,18 @@ function getPrefs() {
 
 //Puts the password together with the prefs and length
 function generatePassword() {
-  var passLength = howManyChars();
-  var prefs = getPrefs();
+  let passLength = howManyChars();
+  let prefs = ""
+  prefs = getPrefs();
 
   prefsLength = prefs.length;
-  for (var i = 0; i < passLength; i++ ) {
+  for (let i = 0; i < passLength; i++ ) {
     finalPass += prefs.charAt(Math.floor(Math.random() * prefsLength));
   }
-  return finalPass;
+  passwordText.value = finalPass;
+  console.log()
   // This is going to do all the heavy lifting
 }
 
-
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-
-  passwordText.value = password;
-
-}
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", generatePassword);

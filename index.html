@@ -10,13 +10,24 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Password Generator</h1>
+        <h1>Simple Password Generator</h1>
       </header>
       <div class="card">
         <div class="card-header">
           <h2>Generate a Password</h2>
         </div>
         <div class="card-body">
+          <section class="options">
+            <h3>Options</h3>
+            <ul>
+              <li class="length-slider"><div class="slidecontainer"><label for="password-length">Length:</label><span id="output"> -</span>
+<input name="password-length" type="range" value="20" min="10" max="64" class="slider" id="pass-length"></div></li>
+              <li><label for="uppercase">Uppercase:</label><input name="uppercase" id="uppercase" type="checkbox" checked /></li>
+              <li><label for="lowercase">Lowercase:</label><input name="lowercase" id="lowercase" type="checkbox" checked /></li>
+              <li><label for="uppercase">Numbers:</label><input name="numbers" id="numbers" type="checkbox" checked /></li>
+              <li><label for="special-characters">Special Characters:</label><input name="special-characters" id="special-characters" type="checkbox" checked /></li>
+            </ul>
+          </section>
           <textarea
             readonly
             id="password"
